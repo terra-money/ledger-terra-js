@@ -1,8 +1,8 @@
 import * as crypto from "crypto";
 import * as secp256k1 from "secp256k1/elliptic";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
-import TerraApp from "../src";
-import { PublicKeyResponse, ERROR_CODE, AddressResponse, SignResponse } from "../src/common";
+import TerraApp, { PublicKeyResponse, AddressResponse, SignResponse  } from "../src";
+import { ERROR_CODE} from "../src/constants";
 
 const debug = require("debug")("ledger-terra-js");
 
@@ -259,7 +259,7 @@ test("sign big tx", async () => {
   expect(responsePk.return_code).toEqual(ERROR_CODE.NoError);
   expect(responsePk.error_message).toEqual("No errors");
 
-  switch (app.version.major) {
+  switch (app.getVersion().major) {
     case 1:
       expect(responseSign.return_code).toEqual(0x6984);
       expect(responseSign.error_message).toEqual("Data is invalid : JSON. Too many tokens");
@@ -280,7 +280,7 @@ test("sign invalid", async () => {
 
   debug("sign invalid", { responseSign });
 
-  switch (app.version.major) {
+  switch (app.getVersion().major) {
     case 1:
       expect(responseSign.return_code).toEqual(0x6984);
       expect(responseSign.error_message).toEqual("Data is invalid : JSON Missing account number");
