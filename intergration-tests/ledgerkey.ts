@@ -9,8 +9,9 @@ async function main() {
   console.log(`accAddress: ${lk.accAddress} / publicKey: ${JSON.stringify(lk.publicKey)}`);
 
   const terra = new LCDClient({
-    chainID: 'bombay-12',
-    URL: 'https://bombay-lcd.terra.dev',
+    chainID: 'columbus-5',
+    URL: 'https://lcd.terra.dev',
+    isClassic: true
   });
 
   // a wallet can be created out of any key
@@ -20,15 +21,16 @@ async function main() {
   // create a simple message that moves coin balances
   const send = new MsgSend(
     'terra1mzv70x2avy4k95dujh9j3xh43nusxh8mh02cs5',
-    'terra1x46rqay4d3cssq8gxxvqz8xt6nwlz4td20k38v',
-    { uluna: 120400 }
+    'terra1av6ssz7k4xpc5nsjj2884nugakpp874ae0krx7',
+    { uluna: 1 }
   );
 
   const tx = await wallet
     .createAndSignTx({
       msgs: [send],
       memo: 'ledgerkey test',
-      signMode: SignMode.SIGN_MODE_LEGACY_AMINO_JSON
+      signMode: SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
+      gasPrices: {uluna:10}
     });
 
   const result = await terra.tx.broadcast(tx);
