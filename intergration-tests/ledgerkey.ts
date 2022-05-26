@@ -7,11 +7,16 @@ import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 async function main() {
   const lk = await LedgerKey.create(await TransportNodeHid.create(60 * 1000));
   console.log(`accAddress: ${lk.accAddress} / publicKey: ${JSON.stringify(lk.publicKey)}`);
-
+  /*
   const terra = new LCDClient({
     chainID: 'columbus-5',
     URL: 'https://lcd.terra.dev',
     isClassic: true
+  });
+  */
+  const terra = new LCDClient({
+    chainID: 'pisco-1',
+    URL: 'https://pisco-lcd.terra.dev',
   });
 
   // a wallet can be created out of any key
@@ -30,7 +35,7 @@ async function main() {
       msgs: [send],
       memo: 'ledgerkey test',
       signMode: SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
-      gasPrices: {uluna:10}
+      gasPrices: { uluna: 10 }
     });
 
   const result = await terra.tx.broadcast(tx);
